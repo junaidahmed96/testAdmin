@@ -18,12 +18,12 @@ function TableData(prop) {
           <th>Experience</th>
         </tr>
       </thead>
-      {prop?.userData?.length
-        ? prop.userData.map((data, index) => {
-            return (
-              <tbody>
-                <tr>
-                  <td key={index}>{index}</td>
+      <tbody>
+        {prop?.userData?.length
+          ? prop.userData.map((data, index) => {
+              return (
+                <tr key={index}>
+                  <td>{index}</td>
                   <td>{data.first_name}</td>
                   <td>{data.last_name}</td>
                   <td>{data.email}</td>
@@ -34,10 +34,10 @@ function TableData(prop) {
                   <td>{data.contact_no}</td>
                   <td>{data.experience}</td>
                 </tr>
-              </tbody>
-            );
-          })
-        : "No Data Found"}
+              );
+            })
+          : "No Data Found"}
+      </tbody>
     </Table>
   );
 }

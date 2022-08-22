@@ -16,15 +16,22 @@ import SignIn from "./pages/SignIn";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const Authentication = ({ Component, props }) => {
-  let auth = localStorage.getItem("user");
-  let location = useLocation();
-  if (!auth) {
-    return <Redirect to="/signin" state={{ from: location }} />;
-  }
-  return <Component filterVal={props} />;
-};
-
+const RouteAuthenticated = ({
+  component: Component,
+  isAuthenticated,
+  ...rest
+}) => (
+  <Route
+    {...rest}
+    render={(props) =>
+      localStorage.getItem("user") ? (
+        <Component {...props} {...rest} />
+      ) : (
+        <Redirect to="/signin" />
+      )
+    }
+  />
+);
 function App() {
   const [filterVal, setFilterVal] = useState("");
   const history = useHistory();
@@ -50,14 +57,13 @@ function App() {
               <SignUp />
             </Route>
           </Switch>
-          {/* <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} /> */}
 
-          <Route element={<Authentication />}>
-            <Route path="/dashboard">
-              <Dashboard filterVal={filterVal} />
-            </Route>
-          </Route>
+          <RouteAuthenticated
+            exact
+            path={"/dashboard"}
+            component={Dashboard}
+            filterVal={filterVal}
+          />
         </Router>
       </div>
 
